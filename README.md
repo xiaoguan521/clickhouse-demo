@@ -79,33 +79,23 @@ python import.py
 
 ### 4. 数据分析和可视化
 
-#### 4.1 API 接口统计分析 (stats.py)
+#### 4.1 每日峰值分析 (daily_max_cpm.py)
 ```bash
-python stats.py
-```
-功能：
-- 统计所有接口的总体 CPM（每分钟请求数）
-- 计算每个接口的平均延迟
-- 展示 Top 10 最繁忙的接口
-- 生成可视化图表 `top_10_cpm.png`
-
-#### 4.2 时间序列分析 (time_stats.py)
-```bash
-python time_stats.py
-```
-功能：
-- 按时间点统计所有接口的 CPM 总和
-- 展示 CPM 最高的前 10 个时间点
-- 生成时间序列图表 `time_series_top_10_cpm.png`
-
-#### 4.3 每日峰值分析 (daily_max_cpm.py)
-```bash
-python daily_max_cpm.py
+python scripts/daily_max_cpm.py
 ```
 功能：
 - 统计每天中 CPM 最高的时间点
 - 展示每日最大请求量的变化趋势
 - 生成柱状图 `daily_max_cpm.png`
+
+#### 4.2 时间序列分析 (time_stats.py)
+```bash
+python scripts/time_stats.py
+```
+功能：
+- 按时间点统计所有接口的 CPM 总和
+- 展示 CPM 最高的前 10 个时间点
+- 生成时间序列图表 `time_series_top_10_cpm.png`
 
 ## 数据格式要求
 
