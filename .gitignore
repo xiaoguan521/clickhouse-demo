@@ -1,0 +1,53 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ClickHouse Data
+data/
+import_logs/
+
+# Generated files
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.pdf
+*.log
+
+# Environment variables
+.env
+.env.*
+
+# Docker
+.docker/
+
+# Operating System
+.DS_Store
+Thumbs.db
+
+# Project specific
+config/*.local.yml
+config/*.local.yaml
+config/*.local.json
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~ 
