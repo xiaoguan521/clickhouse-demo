@@ -1,5 +1,5 @@
 ---
-description: 
+description: 生成规范的Git提交信息
 globs: 
 alwaysApply: true
 ---
@@ -41,3 +41,5 @@ alwaysApply: true
 ```
 
 只返回提交信息本身，不要添加任何解释或多余内容！
+
+回复中文
