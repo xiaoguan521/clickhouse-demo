@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  clickhouse-server:
+    image: clickhouse/clickhouse-server:23.3.9.55
+    container_name: clickhouse-server
+    restart: always
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+      - "9009:9009"
+    volumes:
+      # 使用子目录明确映射而不是整个目录
+      - /home/clickhouse/data/clickhouse/lib/data:/var/lib/clickhouse/data
+      - /home/clickhouse/data/clickhouse/lib/metadata:/var/lib/clickhouse/metadata
+      - /home/clickhouse/data/clickhouse/lib/format_schemas:/var/lib/clickhouse/format_schemas
+      - /home/clickhouse/data/clickhouse/lib/tmp:/var/lib/clickhouse/tmp
+      - /home/clickhouse/data/clickhouse/lib/user_files:/var/lib/clickhouse/user_files
+      - /home/clickhouse/data/clickhouse/lib/access:/var/lib/clickhouse/access
+      - /usr/share/zoneinfo/Asia/Shanghai:/etc/localtime:ro
+      - /home/clickhouse/data/clickhouse/logs/:/var/log/clickhouse-server/
+    environment:
+      - CLICKHOUSE_DB=default
+      - CLICKHOUSE_USER=default
+      - CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1
+      - CLICKHOUSE_PASSWORD=yourpassword
+      - TZ=Asia/Shanghai

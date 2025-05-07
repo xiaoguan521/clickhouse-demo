@@ -171,4 +171,120 @@ CSV 文件需要包含以下列：
 ## 联系方式
 
 - 📧 邮箱：xiaochen@201807.xyz
-- 💬 如有问题，欢迎通过 Issues 或邮件与我联系 
+- 💬 如有问题，欢迎通过 Issues 或邮件与我联系
+
+# ClickHouse 监控数据分析工具
+
+这个项目包含了一系列用于分析ClickHouse中存储的监控数据的脚本。
+
+## 中文字体显示问题解决方案
+
+### 问题描述
+在Linux环境下运行图表生成脚本时，可能会遇到中文字体显示不正常的问题，通常会显示方框或乱码。这是因为Linux系统默认可能没有安装中文字体。
+
+### 解决方法
+
+1. **脚本适配**
+   
+   我们已经更新了脚本，能够智能检测系统上已安装的中文字体。脚本会尝试以下方法：
+   - 优先使用直接加载字体文件的方式
+   - 如果字体文件不可用，则尝试通过字体名称设置
+   - 提供多级回退机制确保至少能显示基本图形
+
+2. **安装中文字体**
+   
+   在CentOS/RHEL系统上，你可以安装Google Noto CJK字体：
+   ```bash
+   sudo yum install google-noto-cjk-fonts
+   ```
+
+   如果需要安装其他中文字体：
+   ```bash
+   # 安装文泉驿字体
+   sudo yum install wqy-microhei-fonts
+   
+   # 安装更多字体
+   sudo yum install cjkuni-uming-fonts
+   ```
+
+   **Ubuntu/Debian系统：**
+   ```bash
+   sudo apt-get update
+   sudo apt-get install fonts-noto-cjk fonts-wqy-microhei fonts-wqy-zenhei
+   ```
+
+3. **检查字体安装**
+   
+   安装字体后，可以使用以下命令检查字体是否正确安装：
+   ```bash
+   # 列出所有已安装的中文字体
+   fc-list :lang=zh
+   
+   # 检查特定字符的支持情况（例如"中"字）
+   fc-list :charset=4E2D
+   ```
+   
+   使用 `fc-list :lang=zh` 命令时，输出示例：
+   ```
+   /usr/share/fonts/google-noto-cjk/NotoSansCJK-Regular.ttc: Noto Sans CJK SC:style=Regular
+   /usr/share/fonts/google-noto-cjk/NotoSansCJK-Bold.ttc: Noto Sans CJK SC:style=Bold
+   /usr/share/fonts/cesi/CESI_HT_GB18030.TTF: CESI黑体-GB18030:style=Regular
+   ```
+   
+   如果输出中包含中文字体，表示安装成功。如果输出为空，则需要安装中文字体。
+   
+4. **刷新字体缓存**
+   
+   安装完字体后，需要刷新字体缓存：
+   ```bash
+   sudo fc-cache -fv
+   ```
+
+5. **重启应用**
+   
+   刷新字体缓存后，重新运行脚本即可。
+
+## 运行脚本
+
+```bash
+# 生成每日最大CPM报告
+python scripts/daily_max_cpm.py
+
+# 生成时间序列Top 10统计
+python scripts/time_stats.py
+```
+
+## 常见问题
+
+- **Q: 即使安装了字体，中文仍然无法正确显示?**
+  
+  A: 确保运行脚本的用户对字体目录有读取权限。也可以尝试使用fontproperties参数显式指定字体路径：
+  ```python
+  import matplotlib.font_manager as fm
+  prop = fm.FontProperties(fname='/usr/share/fonts/google-noto-cjk/NotoSansCJK-Regular.ttc')
+  plt.title('标题', fontproperties=prop)
+  ```
+
+- **Q: 如何查看系统中某个字体的详细信息?**
+  
+  A: 使用`fc-match`命令：
+  ```bash
+  fc-match "Noto Sans CJK SC"
+  ```
+
+- **Q: 如何解读`fc-list :lang=zh`的输出?**
+  
+  A: 输出格式为"字体文件路径: 字体名称:style=样式"。例如：
+  ```
+  /usr/share/fonts/google-noto-cjk/NotoSansCJK-Bold.ttc: Noto Sans CJK SC:style=Bold
+  ```
+  这表示路径为`/usr/share/fonts/google-noto-cjk/NotoSansCJK-Bold.ttc`的字体文件包含"Noto Sans CJK SC"字体的Bold样式。
+
+- **Q: 如何为当前用户安装私有字体?**
+  
+  A: 将字体文件复制到`~/.fonts`目录下，然后运行`fc-cache -fv`命令刷新缓存：
+  ```bash
+  mkdir -p ~/.fonts
+  cp yourfont.ttf ~/.fonts/
+  fc-cache -fv
+  ```
