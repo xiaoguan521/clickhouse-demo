@@ -7,8 +7,8 @@ services:
     restart: always
     ulimits:
       nofile:
-        soft: 262144
-        hard: 262144
+        soft: 524288
+        hard: 524288
     ports:
       - "8123:8123"
       - "9000:9000"
@@ -23,9 +23,16 @@ services:
       - /home/clickhouse/data/clickhouse/lib/access:/var/lib/clickhouse/access
       - /usr/share/zoneinfo/Asia/Shanghai:/etc/localtime:ro
       - /home/clickhouse/data/clickhouse/logs/:/var/log/clickhouse-server/
+      - /home/clickhouse/data/clickhouse/config.xml:/etc/clickhouse-server/config.xml
     environment:
       - CLICKHOUSE_DB=default
       - CLICKHOUSE_USER=default
       - CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1
       - CLICKHOUSE_PASSWORD=yourpassword
       - TZ=Asia/Shanghai
+      - CLICKHOUSE_MAX_CONCURRENT_QUERIES=1000
+      - CLICKHOUSE_MAX_HTTP_CONNECTIONS=2048
+      - CLICKHOUSE_MAX_SERVER_MEMORY_USAGE=0
+      - CLICKHOUSE_MAX_MEMORY_USAGE=0
+      - CLICKHOUSE_MAX_KEEP_ALIVE_REQUESTS=10000
+      - CLICKHOUSE_KEEP_ALIVE_TIMEOUT=60
